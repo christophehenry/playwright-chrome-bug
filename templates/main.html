@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Minimum reproduceable example for Chrome's bug with file input</title>
+</head>
+<body>
+    <main>
+        <span id="count"></span><br>
+        <input id="file" type="file" multiple>
+    </main>
+    <script type="module">
+        let count = 0
+        let fileNames = []
+
+        document.querySelector("#file").addEventListener("input", /** @param {Event} evt */ evt => {
+            evt.preventDefault()
+            evt.stopPropagation()
+            count++
+            for (const file of evt.target.files) {
+                fileNames.push(file.name)
+            }
+            document.querySelector("#count").textContent = `Event called ${count} times; files: ${fileNames.join(", ")}`
+        });
+    </script>
+</body>
+</html>
